@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://by06c856ll3jb"]
+
+[ext_resource type="Script" path="res://scripts/MapPolygon.gd" id="1_niyk4"]
+
+[node name="CollisionMap" type="Node2D"]
+
+[node name="MapPolygon" type="Polygon2D" parent="."]
+position = Vector2(10, 10)
+polygon = PackedVector2Array(-15, 617, 992, 613, 987, 6, 939, 434, 923, 495, 892, 529, 848, 540, 782, 538, 459, 491, 144, 552, 81, 553, 39, 535, 14, 499, 4, 457, -5, 392, -49, 13)
+script = ExtResource("1_niyk4")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="MapPolygon"]
