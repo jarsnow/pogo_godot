@@ -6,30 +6,23 @@ var pin_helper
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
-	# connect ground / unground of the player to functions in the main script
-	$Player.ground_player.connect(_on_player_ground)
-	$Player.unground_player.connect(_on_player_unground)
+	pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	pass	
 
-func _on_player_ground():
-	print("grounded!")
+func _on_player_ground_player():
+	# move joint and anchor to the foot position
+	$PlayerPinJoint.set_global_position($Player/FootPoint.get_global_position())
+	$FootAnchor.set_global_position($Player/FootPoint.get_global_position())
 	
-	# attach player to ground
-	pin_joint = PinJoint2D.new()
-	add_child(pin_joint)
-	
-	pin_joint.position = $Player/FootPoint.position
-	
-	# make a temporary rigidbody 2d to attach
-	pin_helper = StaticBody2D.new()
-	add_child(pin_helper)
-	
-	
-func _on_player_unground():
-	print("ungrounded!")
-	
+	# renable pin joint
+	$PlayerPinJoint.set_node_a(NodePath("../Player"))
+	$PlayerPinJoint.set_node_b(NodePath("../FootAnchor"))
+
+func _on_player_unground_player():	
+	# disable the pin joint for the player
+	$PlayerPinJoint.set_node_a(NodePath(""))
+	$PlayerPinJoint.set_node_b(NodePath(""))
