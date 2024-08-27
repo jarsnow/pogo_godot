@@ -12,8 +12,13 @@ height = 6.0
 
 [node name="Player" type="RigidBody2D"]
 gravity_scale = 0.7
+can_sleep = false
+linear_damp_mode = 1
+angular_damp_mode = 1
+angular_damp = -1.0
 script = ExtResource("1_5u2mb")
 jump_power = 400
+rotation_power = 25000
 
 [node name="BodyHitbox" type="CollisionShape2D" parent="."]
 scale = Vector2(2, 2)
@@ -36,5 +41,13 @@ texture = ExtResource("2_xhjof")
 
 [node name="FootPoint" type="Node2D" parent="."]
 position = Vector2(0, 38)
+
+[node name="AutoJumpTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="PlayerJumpTimer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
 
 [connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

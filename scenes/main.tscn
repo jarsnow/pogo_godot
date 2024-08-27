@@ -12,6 +12,12 @@ script = ExtResource("1_j5k7r")
 
 [node name="Player" parent="." instance=ExtResource("1_l87f0")]
 position = Vector2(450, 305)
+angular_damp_mode = 0
+angular_damp = 5.0
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position_smoothing_enabled = true
+position_smoothing_speed = 20.0
 
 [node name="CollisionMap" parent="." instance=ExtResource("2_rkduw")]
 
@@ -19,7 +25,7 @@ position = Vector2(450, 305)
 position = Vector2(450, 324)
 node_a = NodePath("../Player")
 node_b = NodePath("../FootAnchor")
-disable_collision = false
+softness = 1.0
 
 [node name="FootAnchor" type="StaticBody2D" parent="."]
 position = Vector2(450, 324)
