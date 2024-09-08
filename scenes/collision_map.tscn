@@ -5,8 +5,9 @@
 [node name="CollisionMap" type="Node2D"]
 
 [node name="MapPolygon" type="Polygon2D" parent="."]
-position = Vector2(10, 10)
-polygon = PackedVector2Array(-15, 617, 992, 613, 987, 6, 939, 434, 923, 495, 892, 529, 848, 540, 782, 538, 459, 491, 144, 552, 81, 553, 39, 535, 14, 499, 4, 457, -5, 392, -49, 13)
+position = Vector2(10.1412, 65.5401)
+scale = Vector2(1.00288, 0.909984)
+polygon = PackedVector2Array(-261.388, 633.484, 3447.92, 624.692, 3069.01, 457.656, 2363.05, 500.514, 1423.76, 468.646, 848, 540, 782, 538, 459, 491, 144, 552, 81, 553, 39, 535, 14, 499, 4, 457, -5, 392, -8.11782, -1087.43, -261.388, -1086.33)
 script = ExtResource("1_niyk4")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="MapPolygon"]

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://78idod2x4s4x" path="res://assets/icon.svg" id="2_xhjof"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d851h"]
-radius = 6.0
+radius = 3.5
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qg2lq"]
 radius = 1.0
@@ -21,12 +21,13 @@ base_jump_power = 400
 rotation_power = 25000
 
 [node name="BodyHitbox" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
 scale = Vector2(2, 2)
 shape = SubResource("CapsuleShape2D_d851h")
 
 [node name="Sprite2D" type="Sprite2D" parent="BodyHitbox"]
-position = Vector2(7.62939e-06, 0.0468803)
-scale = Vector2(0.09375, 0.235107)
+position = Vector2(2.38419e-07, -2.98023e-08)
+scale = Vector2(0.078125, 0.235107)
 texture = ExtResource("2_xhjof")
 region_rect = Rect2(0, 0, 128, 128)
 

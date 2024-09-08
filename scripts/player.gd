@@ -131,25 +131,27 @@ func _physics_process(delta):
 	# sometimes the player will hit the ground again before the bonk cooldown is over
 	# when the timer has just ended, check if the player is on the ground
 	# if so, bonk the player
-	if $BonkCooldown.is_stopped() and currently_colliding_ground and !grounded:
-		bonk()
+	#if $BonkCooldown.is_stopped() and currently_colliding_ground and !grounded:
+		#bonk()
 	
 
 func handle_grounded_change(colliding_shape:String, is_jump=false):
 	
 	# normal bonk (was in air and then body hit the ground)
 	if (currently_colliding_ground and !grounded and colliding_shape == "body"):
+		#print("normal bonk")
 		bonk()
 		return
 	
 	# grounded bonk (was grounded / charging a jump and then the body hit the ground)
 	if (grounded and (colliding_shape == "body")):
+		#print("grounded bonk")
 		bonk()
 		return
 		
-	# go from ungrounded to grounded
-	# emit signal to attach player to the ground
-	if colliding_shape == "pogo":
+	# set a cooldown on attaching the player to the ground after bonking
+	# 
+	if colliding_shape == "pogo" and $BonkCooldown.is_stopped():
 		ground()
 	else:
 		unground()
@@ -175,28 +177,35 @@ func unground():
 	$AutoJumpTimer.stop()
 	$PlayerJumpTimer.stop()
 	
-	#$PogoHitbox.set_deferred("disabled", false)
 	set_gravity_scale(0.7)
 	
 	# change center of mass
 	set_center_of_mass($BodyHitbox.get_position())
 	
-	# bounce the player off the ground
-	
-	#last_touched_ground_normal = Vector2.ZERO
-	
 	emit_signal("unground_player")
 	
 # TODO: make bonk force scale with velocity before impact
-# TODO: set a slight cooldown for being able to bonk 
 func bonk():
 	unground()
 	
 	if $BonkCooldown.is_stopped():
-		const bonk_force = 300
+		const bonk_force = 350
 		
-		# apply bonk force
+		# apply rotational force
+		const torque_mult = 1250
+		const torque_min = 5000
+		
+		# rotate 
+		var torque_power = -torque_mult * rotation
+		
+		if(rotation > 0):
+			torque_power -= torque_min
+		else:
+			torque_power += torque_min
+			
+		# apply force and torque
 		apply_central_impulse(bonk_force * last_touched_ground_normal)
+		apply_torque_impulse(torque_power)
 		
 		$BonkCooldown.start()
 
