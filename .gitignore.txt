@@ -9,3 +9,5 @@ export_presets.cfg
 *.tmp
 *.cache
 *.cfg
+
+/scenes/*.tmp

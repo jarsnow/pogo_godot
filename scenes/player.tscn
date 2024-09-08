@@ -17,7 +17,7 @@ linear_damp_mode = 1
 angular_damp_mode = 1
 angular_damp = -1.0
 script = ExtResource("1_5u2mb")
-jump_power = 400
+base_jump_power = 400
 rotation_power = 25000
 
 [node name="BodyHitbox" type="CollisionShape2D" parent="."]
@@ -28,6 +28,7 @@ shape = SubResource("CapsuleShape2D_d851h")
 position = Vector2(7.62939e-06, 0.0468803)
 scale = Vector2(0.09375, 0.235107)
 texture = ExtResource("2_xhjof")
+region_rect = Rect2(0, 0, 128, 128)
 
 [node name="PogoHitbox" type="CollisionShape2D" parent="."]
 position = Vector2(0, 34)
@@ -43,11 +44,15 @@ texture = ExtResource("2_xhjof")
 position = Vector2(0, 38)
 
 [node name="AutoJumpTimer" type="Timer" parent="."]
-wait_time = 0.1
+wait_time = 0.08
 one_shot = true
 
 [node name="PlayerJumpTimer" type="Timer" parent="."]
 wait_time = 0.25
+one_shot = true
+
+[node name="BonkCooldown" type="Timer" parent="."]
+wait_time = 0.05
 one_shot = true
 
 [connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
