@@ -7,11 +7,12 @@ var grounded: bool = false
 var boosted: bool = false
 var currently_colliding_ground: bool = false
 
-var rotation_before_jump: float = 0
+var rotation_for_boost: float = 0
 
 var y_velocity_before_ground: float = 0
 
 var last_touched_ground_normal: Vector2 = Vector2.ZERO
+var last_rotation: float = 0
 
 # the force at which a full power jump propels the player
 @export var base_jump_power: int = 500
@@ -98,7 +99,7 @@ func jump():
 	const manual_jump_y_intercept = 0.5
 	const manual_jump_slope = 1 - manual_jump_y_intercept
 	
-	const boost_multiplier = 1.3
+	const boost_multiplier = 1.4
 	const full_jump_multiplier = 1.2
 	
 	var jump_multiplier = 1
@@ -108,6 +109,7 @@ func jump():
 	elif ($PlayerJumpTimer.is_stopped()): # check for full jump
 		if (boosted):
 			jump_multiplier = boost_multiplier
+			boosted = false
 		else:
 			jump_multiplier = full_jump_multiplier
 	else:
@@ -127,7 +129,15 @@ func _physics_process(delta):
 	# keep track of y velocity, used for jumping and bonk
 	if !grounded:
 		y_velocity_before_ground = linear_velocity.y
-		
+	
+	# check if the player should recieve a boost
+	rotation_for_boost += angle_difference(last_rotation, rotation)
+	last_rotation = rotation
+	
+	if(abs(rotation_for_boost) >= PI * (3/2)):
+		boosted = true
+	
+	
 	# sometimes the player will hit the ground again before the bonk cooldown is over
 	# when the timer has just ended, check if the player is on the ground
 	# if so, bonk the player
@@ -138,20 +148,13 @@ func _physics_process(delta):
 func handle_grounded_change(colliding_shape:String, is_jump=false):
 	
 	# normal bonk (was in air and then body hit the ground)
-	if (currently_colliding_ground and !grounded and colliding_shape == "body"):
-		#print("normal bonk")
-		bonk()
-		return
-	
-	# grounded bonk (was grounded / charging a jump and then the body hit the ground)
-	if (grounded and (colliding_shape == "body")):
-		#print("grounded bonk")
+	# or grounded bonk (was grounded / charging a jump and then the body hit the ground)
+	if (currently_colliding_ground and !grounded and colliding_shape == "body") or (grounded and colliding_shape == "body"):
 		bonk()
 		return
 		
 	# set a cooldown on attaching the player to the ground after bonking
-	# 
-	if colliding_shape == "pogo" and $BonkCooldown.is_stopped():
+	if (colliding_shape == "pogo" and $BonkCooldown.is_stopped()):
 		ground()
 	else:
 		unground()
@@ -165,8 +168,10 @@ func ground():
 	# change center of mass
 	set_center_of_mass($FootPoint.get_position())
 	
-	# disable the hitbox for the pogo
-	#$PogoHitbox.set_deferred("disabled", true)
+	# set value for rotation boost
+	rotation_for_boost = 0
+	
+	# don't have gravity, makes turning weird
 	set_gravity_scale(0)
 	
 	emit_signal("ground_player")
@@ -206,6 +211,9 @@ func bonk():
 		# apply force and torque
 		apply_central_impulse(bonk_force * last_touched_ground_normal)
 		apply_torque_impulse(torque_power)
+		
+		# reset the rotation for charge
+		rotation_for_boost = 0
 		
 		$BonkCooldown.start()
 
