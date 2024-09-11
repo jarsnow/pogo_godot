@@ -120,8 +120,19 @@ func jump():
 	unground()
 	
 	var jump_force = base_jump_power * jump_multiplier
+	
+	# calculate the realistic resulting force vector of pushing off a sloped surface
+	# add the normalized vectors of local up and the ground's normal vector
+	# then apply the force in that direction
+	
+	# represents how much more the player's local upwards direction should be
+	# taken into consideration over the ground normal vector
+	const player_jump_bias = 2
+	var jump_dir: Vector2 = player_jump_bias * local_up.normalized() + last_touched_ground_normal.normalized()
+	jump_dir = jump_dir.normalized()
+	
 	# use impulse, as it is frame independent (should only be applied once)
-	apply_central_impulse(local_up * jump_force)
+	apply_central_impulse(jump_dir * jump_force)
 	
 func _physics_process(delta):
 	handle_input(delta)
