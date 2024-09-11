@@ -171,6 +171,9 @@ func ground():
 	# set value for rotation boost
 	rotation_for_boost = 0
 	
+	# set rotational velocity to zero
+	angular_velocity = 0
+	
 	# don't have gravity, makes turning weird
 	set_gravity_scale(0)
 	
