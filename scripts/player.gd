@@ -3,14 +3,12 @@ extends RigidBody2D
 signal ground_player
 signal unground_player
 
+# information used for functions of the player
 var grounded: bool = false
 var boosted: bool = false
 var currently_colliding_ground: bool = false
-
 var rotation_for_boost: float = 0
-
 var y_velocity_before_ground: float = 0
-
 var last_touched_ground_normal: Vector2 = Vector2.ZERO
 var last_rotation: float = 0
 
@@ -18,10 +16,7 @@ var last_rotation: float = 0
 @export var base_jump_power: int = 500
 
 # the float that is multiplied to the bonus jump boost difference
-@export var jump_boost_dampening: float = 0.9
 @export var rotation_power: int = 40000
-
-# used to determine the 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -46,9 +41,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	# test reset
-	if Input.is_action_just_pressed("reset"):
-		unground()
+	$ChargedPogoVFX.set_emitting(boosted)
 		
 	
 func handle_input(delta):
@@ -69,12 +62,9 @@ func handle_input(delta):
 	if ((grounded and $AutoJumpTimer.is_stopped()) and # a jump is available
 		(not Input.is_action_pressed("jump") or # checks for auto jumps or manually released jumps
 		$PlayerJumpTimer.is_stopped())): # checks for a fully charged jump
-			
-		jump()
 		
-	
+		jump()
 
-# TODO: take into consideration the angle of the floor the player is on at the time of the jump
 # TODO: implement jump dampening
 # should push the player in that direction slightly
 # jump power can be modified by three variables:
@@ -83,8 +73,6 @@ func handle_input(delta):
 #	how long the player has held the jump button for (up to a certain point)
 func jump():
 	var local_up = Vector2.UP.rotated(rotation)
-	
-	# elapsed 
 	
 	# mid section represents the set section of time left after the autojump timer has stopped
 	var player_timer_midsection = $PlayerJumpTimer.wait_time - $AutoJumpTimer.wait_time
@@ -100,7 +88,7 @@ func jump():
 	const manual_jump_slope = 1 - manual_jump_y_intercept
 	
 	const boost_multiplier = 1.4
-	const full_jump_multiplier = 1.2
+	const full_jump_multiplier = 1.1
 	
 	var jump_multiplier = 1
 	
@@ -109,7 +97,6 @@ func jump():
 	elif ($PlayerJumpTimer.is_stopped()): # check for full jump
 		if (boosted):
 			jump_multiplier = boost_multiplier
-			boosted = false
 		else:
 			jump_multiplier = full_jump_multiplier
 	else:
@@ -117,6 +104,8 @@ func jump():
 		var progress_ratio = midsection_elapsed / player_timer_midsection
 		jump_multiplier = manual_jump_slope * progress_ratio + manual_jump_y_intercept
 		
+	boosted = false
+	
 	unground()
 	
 	var jump_force = base_jump_power * jump_multiplier
@@ -147,14 +136,6 @@ func _physics_process(delta):
 	
 	if(abs(rotation_for_boost) >= PI * (3/2)):
 		boosted = true
-	
-	
-	# sometimes the player will hit the ground again before the bonk cooldown is over
-	# when the timer has just ended, check if the player is on the ground
-	# if so, bonk the player
-	#if $BonkCooldown.is_stopped() and currently_colliding_ground and !grounded:
-		#bonk()
-	
 
 func handle_grounded_change(colliding_shape:String, is_jump=false):
 	
@@ -228,6 +209,7 @@ func bonk():
 		
 		# reset the rotation for charge
 		rotation_for_boost = 0
+		boosted = false
 		
 		$BonkCooldown.start()
 

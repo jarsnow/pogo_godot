@@ -56,4 +56,17 @@ one_shot = true
 wait_time = 0.05
 one_shot = true
 
+[node name="ChargedPogoVFX" type="CPUParticles2D" parent="."]
+position = Vector2(0, 38)
+amount = 24
+spread = 180.0
+gravity = Vector2(0, 300)
+initial_velocity_min = 100.0
+initial_velocity_max = 400.0
+color = Color(0.998908, 0.726407, 0.188377, 1)
+
+[node name="ChargedJumpVFX" type="CPUParticles2D" parent="."]
+position = Vector2(0, 38)
+emitting = false
+
 [connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

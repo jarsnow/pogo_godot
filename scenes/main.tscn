@@ -1,14 +1,21 @@
-[gd_scene load_steps=5 format=3 uid="uid://d1sle448q3qa8"]
+[gd_scene load_steps=6 format=3 uid="uid://d1sle448q3qa8"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_j5k7r"]
 [ext_resource type="PackedScene" uid="uid://cfg0qt71lmmd8" path="res://scenes/player.tscn" id="1_l87f0"]
 [ext_resource type="PackedScene" uid="uid://by06c856ll3jb" path="res://scenes/collision_map.tscn" id="2_rkduw"]
+[ext_resource type="Texture2D" uid="uid://78idod2x4s4x" path="res://assets/icon.svg" id="4_kq2dd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eo2h5"]
 radius = 1.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_j5k7r")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_repeat = 2
+texture = ExtResource("4_kq2dd")
+region_enabled = true
+region_rect = Rect2(0, 0, 10000, 10000)
 
 [node name="Player" parent="." instance=ExtResource("1_l87f0")]
 position = Vector2(450, 305)
