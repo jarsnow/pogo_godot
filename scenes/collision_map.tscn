@@ -10,5 +10,6 @@ scale = Vector2(1.00288, 0.909984)
 polygon = PackedVector2Array(-261.388, 633.484, 3447.92, 624.692, 3069.01, 457.656, 2363.05, 500.514, 1423.76, 468.646, 848, 540, 782, 538, 459, 491, 144, 552, 81, 553, 39, 535, 14, 499, 4, 457, -5, 392, -8.11782, -1087.43, -261.388, -1086.33)
 script = ExtResource("1_niyk4")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="MapPolygon"]
-collision_layer = 3
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(64, 104)
+polygon = PackedVector2Array(1376, 184, 1600, 184, 1600, 256, 1376, 256)

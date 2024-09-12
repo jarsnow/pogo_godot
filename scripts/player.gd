@@ -204,6 +204,9 @@ func bonk():
 			torque_power += torque_min
 			
 		# apply force and torque
+		# there is an issue where jumping and bonking at around the same time
+		# launches the player further than normal, so reset velocity before bonking
+		linear_velocity = Vector2.ZERO
 		apply_central_impulse(bonk_force * last_touched_ground_normal)
 		apply_torque_impulse(torque_power)
 		
