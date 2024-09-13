@@ -58,6 +58,7 @@ one_shot = true
 
 [node name="ChargedPogoVFX" type="CPUParticles2D" parent="."]
 position = Vector2(0, 38)
+emitting = false
 amount = 24
 texture = ExtResource("2_xhjof")
 spread = 180.0
