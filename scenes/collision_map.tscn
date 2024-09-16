@@ -4,12 +4,31 @@
 
 [node name="CollisionMap" type="Node2D"]
 
-[node name="MapPolygon" type="Polygon2D" parent="."]
+[node name="base_1" type="Polygon2D" parent="."]
 position = Vector2(10.1412, 65.5401)
 scale = Vector2(1.00288, 0.909984)
-polygon = PackedVector2Array(-261.388, 633.484, 3447.92, 624.692, 3069.01, 457.656, 2363.05, 500.514, 1423.76, 468.646, 848, 540, 782, 538, 459, 491, 144, 552, 81, 553, 39, 535, 14, 499, 4, 457, -5, 392, -8.11782, -1087.43, -261.388, -1086.33)
+polygon = PackedVector2Array(-261.388, 633.484, 3447.92, 624.692, 3069.01, 457.656, 2359.06, 464.25, 1423.76, 468.646, 848, 540, 782, 538, 459, 491, 144, 552, 81, 553, 39, 535, 14, 499, 4, 457, -5, 392, -8.11782, -1087.43, -261.388, -1086.33)
 script = ExtResource("1_niyk4")
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
+[node name="block" type="Polygon2D" parent="."]
 position = Vector2(64, 104)
 polygon = PackedVector2Array(1376, 264, 1608, 264, 1608, 400, 1376, 392)
+
+[node name="block3" type="Polygon2D" parent="."]
+position = Vector2(296, -327.059)
+scale = Vector2(1, 2.11765)
+polygon = PackedVector2Array(1376, 264, 1608, 264, 1608, 400, 1376, 400)
+
+[node name="block5" type="Polygon2D" parent="."]
+position = Vector2(528, -773.647)
+scale = Vector2(1, 3.29412)
+polygon = PackedVector2Array(1376, 264, 1608, 264, 1608, 400, 1488.61, 400, 1376, 400)
+
+[node name="block6" type="Polygon2D" parent="."]
+position = Vector2(992, 112)
+polygon = PackedVector2Array(1376, 264, 1608, 264, 1608, 400, 1376, 400)
+
+[node name="block8" type="Polygon2D" parent="."]
+position = Vector2(760, -272.471)
+scale = Vector2(1, 1.94118)
+polygon = PackedVector2Array(1376, 264, 1608, 264, 1608, 400, 1376, 400)
