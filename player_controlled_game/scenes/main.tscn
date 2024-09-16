@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://d1sle448q3qa8"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_j5k7r"]
+[ext_resource type="PackedScene" uid="uid://cfg0qt71lmmd8" path="res://scenes/player.tscn" id="1_l87f0"]
+[ext_resource type="PackedScene" uid="uid://by06c856ll3jb" path="res://scenes/collision_map.tscn" id="2_rkduw"]
+[ext_resource type="Texture2D" uid="uid://78idod2x4s4x" path="res://assets/icon.svg" id="4_kq2dd"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eo2h5"]
+radius = 1.0
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_j5k7r")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture_repeat = 2
+texture = ExtResource("4_kq2dd")
+region_enabled = true
+region_rect = Rect2(0, 0, 10000, 10000)
+
+[node name="Player" parent="." instance=ExtResource("1_l87f0")]
+position = Vector2(450, 305)
+angular_damp_mode = 0
+angular_damp = 5.0
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position_smoothing_enabled = true
+position_smoothing_speed = 20.0
+
+[node name="CollisionMap" parent="." instance=ExtResource("2_rkduw")]
+
+[node name="PlayerPinJoint" type="PinJoint2D" parent="."]
+position = Vector2(450, 324)
+node_a = NodePath("../Player")
+node_b = NodePath("../FootAnchor")
+softness = 1.0
+
+[node name="FootAnchor" type="StaticBody2D" parent="."]
+position = Vector2(450, 324)
+collision_layer = 0
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape2D" parent="FootAnchor"]
+scale = Vector2(10, 10)
+shape = SubResource("CircleShape2D_eo2h5")
+debug_color = Color(0.903985, 0.304085, 0.0876326, 0.42)
+
+[connection signal="ground_player" from="Player" to="." method="_on_player_ground_player"]
+[connection signal="unground_player" from="Player" to="." method="_on_player_unground_player"]

@@ -1,0 +1,76 @@
+[gd_scene load_steps=5 format=3 uid="uid://cfg0qt71lmmd8"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_5u2mb"]
+[ext_resource type="Texture2D" uid="uid://78idod2x4s4x" path="res://assets/icon.svg" id="2_xhjof"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d851h"]
+radius = 3.5
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qg2lq"]
+radius = 1.0
+height = 6.0
+
+[node name="Player" type="RigidBody2D"]
+gravity_scale = 0.7
+can_sleep = false
+linear_damp_mode = 1
+angular_damp_mode = 1
+angular_damp = -1.0
+script = ExtResource("1_5u2mb")
+base_jump_power = 400
+rotation_power = 25000
+
+[node name="BodyHitbox" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+scale = Vector2(2, 2)
+shape = SubResource("CapsuleShape2D_d851h")
+
+[node name="Sprite2D" type="Sprite2D" parent="BodyHitbox"]
+position = Vector2(2.38419e-07, -2.98023e-08)
+scale = Vector2(0.078125, 0.235107)
+texture = ExtResource("2_xhjof")
+region_rect = Rect2(0, 0, 128, 128)
+
+[node name="PogoHitbox" type="CollisionShape2D" parent="."]
+position = Vector2(0, 34)
+scale = Vector2(2, 2)
+shape = SubResource("CapsuleShape2D_qg2lq")
+
+[node name="Sprite2D" type="Sprite2D" parent="PogoHitbox"]
+position = Vector2(0, 7.15256e-07)
+scale = Vector2(-0.0158085, 0.0473715)
+texture = ExtResource("2_xhjof")
+
+[node name="FootPoint" type="Node2D" parent="."]
+position = Vector2(0, 38)
+
+[node name="AutoJumpTimer" type="Timer" parent="."]
+wait_time = 0.08
+one_shot = true
+
+[node name="PlayerJumpTimer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[node name="BonkCooldown" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
+[node name="ChargedPogoVFX" type="CPUParticles2D" parent="."]
+position = Vector2(0, 38)
+emitting = false
+amount = 24
+texture = ExtResource("2_xhjof")
+spread = 180.0
+gravity = Vector2(0, 300)
+initial_velocity_min = 100.0
+initial_velocity_max = 400.0
+scale_amount_min = 0.03
+scale_amount_max = 0.15
+color = Color(1, 0.968627, 0.0941176, 1)
+
+[node name="ChargedJumpTakeoffVFX" type="CPUParticles2D" parent="."]
+position = Vector2(0, 38)
+emitting = false
+
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
