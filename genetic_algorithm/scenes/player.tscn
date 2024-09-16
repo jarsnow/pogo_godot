@@ -1,0 +1,98 @@
+[gd_scene load_steps=6 format=3 uid="uid://cfg0qt71lmmd8"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_5u2mb"]
+[ext_resource type="Texture2D" uid="uid://78idod2x4s4x" path="res://assets/icon.svg" id="2_xhjof"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d851h"]
+radius = 3.5
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qg2lq"]
+radius = 1.0
+height = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i0isp"]
+radius = 1.0
+
+[node name="AgentBase" type="Node2D"]
+
+[node name="Player" type="RigidBody2D" parent="."]
+gravity_scale = 0.7
+can_sleep = false
+linear_damp_mode = 1
+angular_damp_mode = 1
+angular_damp = -1.0
+script = ExtResource("1_5u2mb")
+base_jump_power = 400
+rotation_power = 25000
+
+[node name="BodyHitbox" type="CollisionShape2D" parent="Player"]
+position = Vector2(0, -2)
+scale = Vector2(2, 2)
+shape = SubResource("CapsuleShape2D_d851h")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player/BodyHitbox"]
+position = Vector2(2.38419e-07, -2.98023e-08)
+scale = Vector2(0.078125, 0.235107)
+texture = ExtResource("2_xhjof")
+region_rect = Rect2(0, 0, 128, 128)
+
+[node name="PogoHitbox" type="CollisionShape2D" parent="Player"]
+position = Vector2(0, 34)
+scale = Vector2(2, 2)
+shape = SubResource("CapsuleShape2D_qg2lq")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player/PogoHitbox"]
+position = Vector2(0, 7.15256e-07)
+scale = Vector2(-0.0158085, 0.0473715)
+texture = ExtResource("2_xhjof")
+
+[node name="FootPoint" type="Node2D" parent="Player"]
+position = Vector2(0, 38)
+
+[node name="AutoJumpTimer" type="Timer" parent="Player"]
+wait_time = 0.08
+one_shot = true
+
+[node name="PlayerJumpTimer" type="Timer" parent="Player"]
+wait_time = 0.25
+one_shot = true
+
+[node name="BonkCooldown" type="Timer" parent="Player"]
+wait_time = 0.05
+one_shot = true
+
+[node name="ChargedPogoVFX" type="CPUParticles2D" parent="Player"]
+position = Vector2(0, 38)
+emitting = false
+amount = 24
+texture = ExtResource("2_xhjof")
+spread = 180.0
+gravity = Vector2(0, 300)
+initial_velocity_min = 100.0
+initial_velocity_max = 400.0
+scale_amount_min = 0.03
+scale_amount_max = 0.15
+color = Color(1, 0.968627, 0.0941176, 1)
+
+[node name="ChargedJumpTakeoffVFX" type="CPUParticles2D" parent="Player"]
+position = Vector2(0, 38)
+emitting = false
+
+[node name="PlayerPinJoint" type="PinJoint2D" parent="."]
+position = Vector2(450, 324)
+node_a = NodePath("..")
+node_b = NodePath("../FootAnchor")
+softness = 1.0
+
+[node name="FootAnchor" type="StaticBody2D" parent="."]
+position = Vector2(450, 324)
+disable_mode = 1
+collision_layer = 0
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape2D" parent="FootAnchor"]
+scale = Vector2(10, 10)
+shape = SubResource("CircleShape2D_i0isp")
+debug_color = Color(0.903985, 0.304085, 0.0876326, 0.42)
+
+[connection signal="body_shape_entered" from="Player" to="Player" method="_on_body_shape_entered"]

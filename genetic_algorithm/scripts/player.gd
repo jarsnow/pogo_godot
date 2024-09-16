@@ -12,11 +12,15 @@ var y_velocity_before_ground: float = 0
 var last_touched_ground_normal: Vector2 = Vector2.ZERO
 var last_rotation: float = 0
 
+var fitness: float = 0
+
 # the force at which a full power jump propels the player
 @export var base_jump_power: int = 500
 
 # the float that is multiplied to the bonus jump boost difference
 @export var rotation_power: int = 40000
+
+var chromosome: String = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -48,20 +52,36 @@ func handle_input(delta):
 	# check for body collision if grounded OR
 	# check for body and pogo collision if ungrounded
 	
+	# read each gene from chromosome
+	var index = Engine.get_physics_frames()
+	
+	if index >= chromosome.length():
+		printerr("game has ran longer than chromosome length")
+	
+	# can either be L, R, N
+	# for LEFT, RIGHT, or NO rotation
+	var gene = chromosome[index] 
+	
 	# rotation
 	var turn_dir = 0
-	if Input.is_action_pressed("turn_clockwise"):
-		turn_dir += 1
-	if Input.is_action_pressed("turn_counterclockwise"):
-		turn_dir -= 1
+	
+	if gene == "r":
+		turn_dir = 1
+	elif gene == "l":
+		turn_dir = -1
+	elif gene == "n":
+		turn_dir = 0
+	else:
+		printerr("invalid gene in chromosome!")
 	
 	turn_dir *= rotation_power
 	apply_torque(turn_dir) 
 	
+	# assume jump is always pressed for easy chromosome analysis
+
 	# handle jumps, three cases, auto, half, or full jump
 	if ((grounded and $AutoJumpTimer.is_stopped()) and # a jump is available
-		(not Input.is_action_pressed("jump") or # checks for auto jumps or manually released jumps
-		$PlayerJumpTimer.is_stopped())): # checks for a fully charged jump
+		($PlayerJumpTimer.is_stopped())): # checks for a fully charged jump
 		
 		jump()
 
@@ -169,7 +189,13 @@ func ground():
 	# don't have gravity, makes turning weird
 	set_gravity_scale(0)
 	
-	emit_signal("ground_player")
+	# move joint and anchor to the foot position
+	get_node("../PlayerPinJoint").set_global_position($FootPoint.get_global_position())
+	get_node("../FootAnchor").set_global_position($FootPoint.get_global_position())
+	
+	# renable pin joint
+	get_node("../PlayerPinJoint").set_node_a(NodePath("../Player"))
+	get_node("../PlayerPinJoint").set_node_b(NodePath("../FootAnchor"))
 
 func unground():
 	grounded = false
@@ -182,7 +208,9 @@ func unground():
 	# change center of mass
 	set_center_of_mass($BodyHitbox.get_position())
 	
-	emit_signal("unground_player")
+	# disable the pin joint for the player
+	get_node("../PlayerPinJoint").set_node_a(NodePath(""))
+	get_node("../PlayerPinJoint").set_node_b(NodePath(""))
 	
 # TODO: make bonk force scale with velocity before impact
 func bonk():
