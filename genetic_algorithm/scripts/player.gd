@@ -13,6 +13,8 @@ var last_touched_ground_normal: Vector2 = Vector2.ZERO
 var last_rotation: float = 0
 
 var fitness: float = 0
+var engine_frame_created: int = 0
+var boosted_jump_count: int = 0
 
 # the force at which a full power jump propels the player
 @export var base_jump_power: int = 500
@@ -21,9 +23,11 @@ var fitness: float = 0
 @export var rotation_power: int = 40000
 
 var chromosome: String = ""
+var max_path_dist = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
 	grounded = false
 	emit_signal("unground_player")
 	
@@ -41,6 +45,8 @@ func _ready():
 	
 	# set angular dampening here because it doesn't work in the inspector
 	set_angular_damp(10)
+	
+	engine_frame_created = Engine.get_physics_frames()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -53,10 +59,11 @@ func handle_input(delta):
 	# check for body and pogo collision if ungrounded
 	
 	# read each gene from chromosome
-	var index = Engine.get_physics_frames()
+	var index = Engine.get_physics_frames() - engine_frame_created
 	
 	if index >= chromosome.length():
 		printerr("game has ran longer than chromosome length")
+		return
 	
 	# can either be L, R, N
 	# for LEFT, RIGHT, or NO rotation
@@ -117,6 +124,7 @@ func jump():
 	elif ($PlayerJumpTimer.is_stopped()): # check for full jump
 		if (boosted):
 			jump_multiplier = boost_multiplier
+			boosted_jump_count += 1
 		else:
 			jump_multiplier = full_jump_multiplier
 	else:

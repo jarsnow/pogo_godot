@@ -2,11 +2,11 @@
 
 [sub_resource type="Curve2D" id="Curve2D_lgtv5"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -3200, 3200, 0, 0, 0, 0, -2600, 1000, 0, 0, 0, 0, 400, 0, 0, 0, 0, 0, 2000, -1800, 0, 0, 0, 0, 4800, -1800)
+"points": PackedVector2Array(0, 0, 0, 0, -3200, 3200, 0, 0, 0, 0, -2600, 1000, 0, 0, 0, 0, 400, 0, 0, 0, 0, 0, 2000, -1600, 0, 0, 0, 0, 4800, -1600)
 }
 point_count = 5
 
-[node name="CollisionMap" type="Node2D"]
+[node name="BoostJumpStairsMap" type="Node2D"]
 
 [node name="Base" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(-300, 600, -2200, 1200, 1500, 1200, 1500, 600)
@@ -18,4 +18,8 @@ polygon = PackedVector2Array(600, 600, 600, 400, 800, 400, 800, 200, 1000, 200, 
 polygon = PackedVector2Array(2400, -1200, 4800, -1200, 4800, -800, 2400, -800)
 
 [node name="Path2D" type="Path2D" parent="."]
+position = Vector2(0, 200)
 curve = SubResource("Curve2D_lgtv5")
+
+[node name="SpawnPoint" type="Node2D" parent="."]
+position = Vector2(200, 400)
