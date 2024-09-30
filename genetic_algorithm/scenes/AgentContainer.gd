@@ -8,14 +8,14 @@ var physics_frame_generation_started: int
 
 var player_agents = []
 
-@export var agent_count: int = 8
+@export var agent_count: int = 64
 
-@export var physics_speed: float = 1.0
+@export var physics_speed: float = 10.0
 
 @export var map: Node2D
-@export var runtime_seconds: int = 1
+@export var runtime_seconds: int = 64
 
-@export var top_rank_survivors: int = 16
+@export var top_rank_survivors: int = 32
 @export var random_bottom_survivors: int = 8
 
 @export var mutation_rate: float = 0.05
@@ -34,15 +34,14 @@ func _process(delta):
 func _physics_process(delta):
 	# check if generation is done
 	var physics_frames_passed = Engine.get_physics_frames() - physics_frame_generation_started
+	update_player_agents()
 	
 	if physics_frames_passed >= chromosome_length - 1:
 		end_generation()
 		return
-	
-	print("frames passed: ", physics_frames_passed)
-	print("chromosome length: ", chromosome_length)
-	print("agents in list: ", len(player_agents))
-	update_agents_max_path_distances()
+		
+	if physics_frames_passed > 10:
+		update_agents_max_path_distances()
 
 func start():
 	
@@ -129,7 +128,6 @@ func sorting_helper_descending(a, b):
 	return get_agent_fitness(a) > get_agent_fitness(b)
 	
 func update_agents_max_path_distances():
-	print("agents before counting: ", len(player_agents))
 	# update max path dist for each
 	for player_agent in player_agents:
 		
@@ -193,9 +191,9 @@ func end_generation():
 		new_chromosomes.append(child)
 	
 	for player_agent in player_agents:
-		player_agent.queue_free()
-		await player_agent.tree_exited
-		print("agent exited")
+		var parent = player_agent.get_parent()
+		parent.queue_free()
+		await parent.tree_exited
 	
 	# delete old survivors
 	update_player_agents()
@@ -206,11 +204,13 @@ func end_generation():
 func update_player_agents():
 	
 	player_agents = []
-	for node in get_children():
-		if is_instance_valid(node) and node != null and node.get_name() == "AgentBase":
-			player_agents.append(node.get_node("Player"))
 	
-	print(len(player_agents))
+	for node in get_children():
+		if is_instance_valid(node) and node != null and node.get_class() == "Node2D":
+			var player_node = node.get_node("Player")
+			if !is_instance_valid(player_node):
+				continue
+			player_agents.append(player_node)
 	
 func set_physics_speed(new_speed: float):
 	Engine.set_time_scale(new_speed) # set simulation speed

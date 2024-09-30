@@ -27,3 +27,4 @@ script = ExtResource("4_wy3sb")
 [node name="AgentContainer" type="Node2D" parent="." node_paths=PackedStringArray("map")]
 script = ExtResource("5_6eimi")
 map = NodePath("../SmallerStairsMap")
+runtime_seconds = 32
