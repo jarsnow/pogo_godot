@@ -28,3 +28,5 @@ script = ExtResource("4_wy3sb")
 script = ExtResource("5_6eimi")
 map = NodePath("../SmallerStairsMap")
 runtime_seconds = 32
+top_rank_survivors = 16
+mutation_rate = 0.01

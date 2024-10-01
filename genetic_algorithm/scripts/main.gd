@@ -32,5 +32,4 @@ func initialize_map_collision():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	print(len($AgentContainer.get_children()))
 	pass
