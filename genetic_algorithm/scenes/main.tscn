@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://d1sle448q3qa8"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_j5k7r"]
-[ext_resource type="PackedScene" uid="uid://cd7mkj03qshd7" path="res://scenes/smaller_stairs_map.tscn" id="3_7peev"]
 [ext_resource type="Texture2D" uid="uid://78idod2x4s4x" path="res://assets/icon.svg" id="4_kq2dd"]
 [ext_resource type="Script" path="res://scripts/Camera2D.gd" id="4_wy3sb"]
 [ext_resource type="Script" path="res://scenes/AgentContainer.gd" id="5_6eimi"]
+[ext_resource type="PackedScene" uid="uid://d3q45rkqg22ag" path="res://scenes/smooth_ramp.tscn" id="6_l7fkx"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_j5k7r")
@@ -15,8 +15,6 @@ texture = ExtResource("4_kq2dd")
 region_enabled = true
 region_rect = Rect2(0, 0, 10000, 10000)
 
-[node name="SmallerStairsMap" parent="." instance=ExtResource("3_7peev")]
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(104, 313)
 zoom = Vector2(0.5, 0.5)
@@ -26,7 +24,9 @@ script = ExtResource("4_wy3sb")
 
 [node name="AgentContainer" type="Node2D" parent="." node_paths=PackedStringArray("map")]
 script = ExtResource("5_6eimi")
-map = NodePath("../SmallerStairsMap")
+map = NodePath("../SmoothRamp")
 runtime_seconds = 32
 top_rank_survivors = 16
 mutation_rate = 0.01
+
+[node name="SmoothRamp" parent="." instance=ExtResource("6_l7fkx")]

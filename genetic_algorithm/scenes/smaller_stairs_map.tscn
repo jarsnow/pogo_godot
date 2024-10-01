@@ -2,9 +2,9 @@
 
 [sub_resource type="Curve2D" id="Curve2D_7hkeo"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -2600, 4800, 0, 0, 0, 0, -2600, 1000, 0, 0, 0, 0, -300, 200, 0, 0, 0, 0, 600, 200, 0, 0, 0, 0, 2500, -800, 0, 0, 0, 0, 5200, -800)
+"points": PackedVector2Array(0, 0, 0, 0, -2600, 4800, 0, 0, 0, 0, -2600, 1000, 0, 0, 0, 0, -300, 200, 0, 0, 0, 0, 600, 200, 0, 0, 0, 0, 2500, -800, 0, 0, 0, 0, 4300, -800, 0, 0, 0, 0, 4300, 300)
 }
-point_count = 6
+point_count = 7
 
 [node name="SmallerStairsMap" type="Node2D"]
 

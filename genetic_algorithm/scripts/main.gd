@@ -12,7 +12,7 @@ func _ready():
 # assign collision to the map
 func initialize_map_collision():
 	
-	for map_polygon in $SmallerStairsMap.get_children():
+	for map_polygon in $AgentContainer.map.get_children():
 		# skip over the path node
 		if map_polygon.get_class() != "Polygon2D":
 			continue
