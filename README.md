@@ -29,6 +29,3 @@ The genetic algorithm implemented encourages agents to follow a path through an 
 `9. OPTIONAL: Adjust parameters (mutation rate, which agents are selected for reproduction, how fast the simulation runs, runtime).`
 
 `10. Run the main scene.`
-
-I am currently actively working on this project, and I plan to adjust the parameters for the genetic algorithm around until the agents can go through a small set of maps in a reasonable time.
-I also plan on adding simple GUI to display the current generation amount, as well as some way to display past agent fitness values for each simulation.
